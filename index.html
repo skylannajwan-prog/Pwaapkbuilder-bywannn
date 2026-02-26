@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PWA Builder</title>
+
+<style>
+:root{
+--green:#20d27d;
+--green-dark:#16b468;
+--bg:#f6fffb;
+--white:#ffffff;
+--text:#1f2937;
+--muted:#6b7280;
+--danger:#ef4444;
+--shadow:0 10px 30px rgba(0,0,0,.08);
+--radius:18px;
+}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:system-ui,-apple-system,sans-serif;
+}
+
+body{
+background:linear-gradient(180deg,#eafff5,#f6fffb);
+color:var(--text);
+}
+
+/* ================= HEADER ================= */
+
+header{
+padding:26px 18px 22px;
+background:linear-gradient(135deg,var(--green),var(--green-dark));
+color:white;
+position:relative;
+border-bottom-left-radius:28px;
+border-bottom-right-radius:28px;
+box-shadow:0 12px 30px rgba(0,0,0,.15);
+z-index:1;
+}
+
+header h1{
+font-size:22px;
+font-weight:900;
+}
+
+header p{
+font-size:13px;
+opacity:.9;
+margin-top:4px;
+}
+
+.menu-btn{
+position:absolute;
+right:18px;
+top:24px;
+font-size:22px;
+cursor:pointer;
+}
+
+/* ================= TOP NAV ================= */
+
+.top-nav{
+display:flex;
+justify-content:center;
+gap:12px;
+padding:18px;
+position:relative;
+z-index:1;
+}
+
+.top-nav button{
+flex:1;
+padding:14px;
+border-radius:14px;
+border:none;
+font-weight:800;
+background:white;
+box-shadow:0 6px 20px rgba(0,0,0,0.08);
+color:var(--green-dark);
+cursor:pointer;
+}
+
+/* ================= CONTAINER ================= */
+
+.container{
+padding:10px 18px 30px;
+max-width:760px;
+margin:auto;
+}
+
+/* ================= CARD ================= */
+
+.card{
+background:white;
+border-radius:var(--radius);
+padding:18px;
+box-shadow:var(--shadow);
+margin-bottom:18px;
+}
+
+.card-title{
+font-weight:900;
+margin-bottom:14px;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.card-title span{
+background:var(--green);
+color:white;
+padding:4px 10px;
+border-radius:999px;
+font-size:12px;
+}
+
+/* ================= INPUT ================= */
+
+label{
+font-size:13px;
+font-weight:800;
+color:var(--muted);
+}
+
+input{
+width:100%;
+margin-top:6px;
+padding:12px 14px;
+border-radius:14px;
+border:1.5px solid #e5e7eb;
+outline:none;
+font-size:14px;
+margin-bottom:10px;
+}
+
+input:focus{
+border-color:var(--green);
+}
+
+.error{
+color:var(--danger);
+font-size:12px;
+margin-top:-6px;
+margin-bottom:10px;
+display:none;
+font-weight:700;
+}
+
+/* ================= SOURCE ================= */
+
+.source-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin-top:10px;
+}
+
+.source-grid button{
+padding:14px 10px;
+border-radius:14px;
+border:none;
+font-weight:800;
+cursor:pointer;
+background:#f0fff8;
+color:var(--green-dark);
+box-shadow:inset 0 0 0 2px #d1fae5;
+}
+
+.source-grid button.active{
+background:var(--green);
+color:white;
+box-shadow:none;
+}
+
+/* ================= PREVIEW ================= */
+
+.preview-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:10px;
+}
+
+.preview-btn{
+background:var(--green-dark);
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:999px;
+font-size:13px;
+font-weight:800;
+cursor:pointer;
+}
+
+.preview-box{
+height:320px;
+border-radius:18px;
+overflow:hidden;
+border:2px dashed #d1fae5;
+background:#fafffc;
+}
+
+.preview-box iframe{
+width:100%;
+height:100%;
+border:none;
+}
+
+/* ================= BUILD ================= */
+
+.build-btn{
+width:100%;
+padding:16px;
+border:none;
+border-radius:18px;
+font-size:17px;
+font-weight:900;
+background:linear-gradient(135deg,var(--green),var(--green-dark));
+color:white;
+box-shadow:var(--shadow);
+cursor:pointer;
+display:none;
+}
+
+/* ================= APK LIST ================= */
+
+.apk-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px;
+border-radius:14px;
+background:#ecfdf5;
+margin-bottom:10px;
+font-weight:800;
+}
+
+.apk-item button{
+background:var(--green-dark);
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:999px;
+font-weight:800;
+cursor:pointer;
+}
+
+/* ================= SIDE MENU FIX ================= */
+
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.4);
+display:none;
+z-index:1000;
+}
+
+.side-menu{
+position:fixed;
+top:0;
+right:-260px;
+width:240px;
+height:100%;
+background:white;
+padding:24px;
+box-shadow:0 10px 30px rgba(0,0,0,.2);
+transition:.3s;
+z-index:1100;
+}
+
+.side-menu h3{
+margin-bottom:20px;
+}
+
+.side-menu a{
+display:block;
+padding:12px;
+border-radius:12px;
+background:#f0fff8;
+margin-bottom:12px;
+text-decoration:none;
+color:var(--green-dark);
+font-weight:900;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>PWA Builder</h1>
+<p>Buat aplikasi Android dari Web / HTML / GitHub</p>
+<div class="menu-btn" onclick="openMenu()">☰</div>
+</header>
+
+<div class="top-nav">
+<button onclick="showBuild()">Build</button>
+<button onclick="showApk()">APK</button>
+</div>
+
+<div class="container" id="buildPage">
+
+<div class="card">
+<div class="card-title">📱 Identitas Aplikasi <span>WAJIB</span></div>
+
+<label>Nama Aplikasi</label>
+<input id="appName">
+<div class="error" id="errName">Silahkan isi bagian ini terlebih dahulu!!</div>
+
+<label>Package Name</label>
+<input id="packageName" placeholder="com.nama.nama">
+<div class="error" id="errPackage">Format harus com.nama.nama</div>
+</div>
+
+<div class="card">
+<div class="card-title">🌐 Sumber Konten <span>PILIH 1</span></div>
+
+<div class="source-grid">
+<button id="btnFile" onclick="selectSource('file')">📄 File</button>
+<button id="btnLink" onclick="selectSource('link')">🔗 Link</button>
+<button id="btnRepo" onclick="selectSource('repo')">📦 Repo</button>
+</div>
+
+<input type="file" id="fileInput" style="display:none;margin-top:12px">
+<input id="linkInput" placeholder="https://example.com" style="display:none;margin-top:12px">
+<input id="repoInput" placeholder="https://github.com/user/repo" style="display:none;margin-top:12px">
+
+<div class="error" id="errSource">Silahkan isi bagian ini terlebih dahulu!!</div>
+</div>
+
+<div class="card">
+<div class="preview-header">
+<div class="card-title">👁️ Preview</div>
+<button class="preview-btn" onclick="previewApp()">Preview</button>
+</div>
+
+<div class="preview-box">
+<iframe id="previewFrame"></iframe>
+</div>
+</div>
+
+<button class="build-btn" id="buildBtn" onclick="buildApk()">🚀 BUILD APK</button>
+
+</div>
+
+<div class="container" id="apkPage" style="display:none">
+<div class="card">
+<div class="card-title">📦 APK Saya</div>
+<div id="apkList"></div>
+</div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+<div class="side-menu" id="sideMenu">
+<h3>Menu</h3>
+<a href="mailto:siwannndevofficial@gmail.com">🐞 Report Bug</a>
+<a href="https://sociabuzz.com/xyhackcommunitydonate/tribe" target="_blank">💚 Donate</a>
+</div>
+
+<script>
+let selectedSource=null;
+
+function selectSource(t){
+selectedSource=t;
+
+["file","link","repo"].forEach(x=>{
+document.getElementById("btn"+x.charAt(0).toUpperCase()+x.slice(1)).classList.remove("active");
+document.getElementById(x+"Input").style.display="none";
+document.getElementById(x+"Input").value="";
+});
+
+document.getElementById("btn"+t.charAt(0).toUpperCase()+t.slice(1)).classList.add("active");
+document.getElementById(t+"Input").style.display="block";
+previewFrame.src="";
+validate();
+}
+
+function previewApp(){
+if(selectedSource==="file"){
+let f=fileInput.files[0];
+if(f){
+let r=new FileReader();
+r.onload=e=>previewFrame.srcdoc=e.target.result;
+r.readAsText(f);
+}
+}
+if(selectedSource==="link") previewFrame.src=linkInput.value;
+if(selectedSource==="repo") previewFrame.src=repoInput.value;
+validate();
+}
+
+function validate(){
+let ok=true;
+
+if(!appName.value.trim()){errName.style.display="block";ok=false}else errName.style.display="none";
+if(!/^com\.[a-z0-9]+\.[a-z0-9]+$/i.test(packageName.value)){errPackage.style.display="block";ok=false}else errPackage.style.display="none";
+if(!selectedSource){errSource.style.display="block";ok=false}else errSource.style.display="none";
+
+buildBtn.style.display=(ok && navigator.onLine)?"block":"none";
+}
+
+document.querySelectorAll("input").forEach(i=>i.addEventListener("input",validate));
+
+window.addEventListener("offline",()=>{alert("Offline. Tidak bisa build.");validate();});
+
+function buildApk(){
+if(!navigator.onLine){alert("Offline. Tidak bisa build.");return;}
+let list=JSON.parse(localStorage.getItem("apkList")||"[]");
+list.push(appName.value);
+localStorage.setItem("apkList",JSON.stringify(list));
+alert("Simulasi build berhasil!");
+}
+
+function showBuild(){buildPage.style.display="block";apkPage.style.display="none";}
+function showApk(){buildPage.style.display="none";apkPage.style.display="block";loadApk();}
+function loadApk(){
+apkList.innerHTML="";
+(JSON.parse(localStorage.getItem("apkList")||"[]")).forEach(a=>{
+apkList.innerHTML+=`<div class="apk-item">${a}<button>Install</button></div>`;
+});
+}
+
+function openMenu(){overlay.style.display="block";sideMenu.style.right="0";}
+function closeMenu(){overlay.style.display="none";sideMenu.style.right="-260px";}
+</script>
+
+</body>
+</html>
